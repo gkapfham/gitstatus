@@ -57,7 +57,7 @@ function gitstatus_prompt_update() {
   p+="${clean}שׂ ${where//\%/%%}"             # escape %
 
   # ⇣42 if behind the remote.
-  (( VCS_STATUS_COMMITS_BEHIND )) && p+=" ${ready}${VCS_STATUS_COMMITS_BEHIND}"
+  (( VCS_STATUS_COMMITS_BEHIND )) && p+=" ${ready}${VCS_STATUS_COMMITS_BEHIND} %{$fg_bold[green]%}%{✔%G%}"
   # ⇡42 if ahead of the remote; no leading space if also behind the remote: ⇣42⇡42.
   (( VCS_STATUS_COMMITS_AHEAD && !VCS_STATUS_COMMITS_BEHIND )) && p+=" "
   (( VCS_STATUS_COMMITS_AHEAD  )) && p+="${ready}${VCS_STATUS_COMMITS_AHEAD}"
@@ -78,6 +78,8 @@ function gitstatus_prompt_update() {
   (( VCS_STATUS_NUM_UNSTAGED   )) && p+=" ${modified}!${VCS_STATUS_NUM_UNSTAGED}"
   # ?42 if have untracked files. It's really a question mark, your font isn't broken.
   (( VCS_STATUS_NUM_UNTRACKED  )) && p+=" ${untracked}?${VCS_STATUS_NUM_UNTRACKED}"
+
+  (( !VCS_STATUS_NUM_UNTRACKED && !VCS_STATUS_NUM_UNSTAGED && !VCS_STATUS_NUM_STAGED && !VCS_STATUS_NUM_CONFLICTED)) && p+=" %{$fg_bold[green]%}%{✔%G%}"
 
   GITSTATUS_PROMPT="${p}%f "
 
