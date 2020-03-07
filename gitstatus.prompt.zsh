@@ -80,7 +80,8 @@ function gitstatus_prompt_update() {
   # ?42 if have untracked files. It's really a question mark, your font isn't broken.
   (( VCS_STATUS_NUM_UNTRACKED  )) && p+=" ${untracked}?${VCS_STATUS_NUM_UNTRACKED}"
 
-  (( !VCS_STATUS_NUM_UNTRACKED && !VCS_STATUS_NUM_UNSTAGED && !VCS_STATUS_NUM_STAGED && !VCS_STATUS_NUM_CONFLICTED)) && p+=" %{$fg_bold[green]%}%{✔%G%}"
+  # checkmark at the end of the prompt when repository is clean
+  (( !VCS_STATUS_NUM_UNTRACKED && !VCS_STATUS_NUM_UNSTAGED && !VCS_STATUS_NUM_STAGED && !VCS_STATUS_NUM_CONFLICTED)) && p+=" %{$fg_bold[green]%}%{%G%}"
 
   GITSTATUS_PROMPT="${p}%f "
 
