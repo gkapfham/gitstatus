@@ -34,10 +34,10 @@ function gitstatus_prompt_update() {
   gitstatus_query 'MY'                  || return 1  # error
   [[ $VCS_STATUS_RESULT == 'ok-sync' ]] || return 0  # not a git repo
 
-  local      clean='%76F'   # green foreground
-  local   modified='%178F'  # yellow foreground
-  local  untracked='%39F'   # blue foreground
-  local conflicted='%196F'  # red foreground
+  local      clean='%B%F{110}'
+  local   modified='%172F'  # yellow foreground
+  local  untracked='%172F'  # blue foreground
+  local conflicted='%167F'  # red foreground
 
   local p
 
@@ -49,11 +49,11 @@ function gitstatus_prompt_update() {
     where=$VCS_STATUS_TAG
   else
     p+='%f@'
-    where=${VCS_STATUS_COMMIT[1,8]}
+    where=''+${VCS_STATUS_COMMIT[1,8]}
   fi
 
   (( $#where > 32 )) && where[13,-13]="…"  # truncate long branch names and tags
-  p+="${clean}${where//\%/%%}"             # escape %
+  p+="${clean}שׂ ${where//\%/%%}"             # escape %
 
   # ⇣42 if behind the remote.
   (( VCS_STATUS_COMMITS_BEHIND )) && p+=" ${clean}⇣${VCS_STATUS_COMMITS_BEHIND}"
@@ -78,7 +78,7 @@ function gitstatus_prompt_update() {
   # ?42 if have untracked files. It's really a question mark, your font isn't broken.
   (( VCS_STATUS_NUM_UNTRACKED  )) && p+=" ${untracked}?${VCS_STATUS_NUM_UNTRACKED}"
 
-  GITSTATUS_PROMPT="${p}%f"
+  GITSTATUS_PROMPT="${p}%f "
 
   # The length of GITSTATUS_PROMPT after removing %f and %F.
   GITSTATUS_PROMPT_LEN="${(m)#${${GITSTATUS_PROMPT//\%\%/x}//\%(f|<->F)}}"
@@ -104,8 +104,11 @@ setopt no_prompt_bang prompt_percent prompt_subst
 #   % █
 #
 # The current directory gets truncated from the left if the whole prompt doesn't fit on the line.
-PROMPT='%70F%n@%m%f '                                  # green user@host
-PROMPT+='%39F%$((-GITSTATUS_PROMPT_LEN-1))<…<%~%<<%f'  # blue current working directory
-PROMPT+='${GITSTATUS_PROMPT:+ $GITSTATUS_PROMPT}'      # git status
-PROMPT+=$'\n'                                          # new line
-PROMPT+='%F{%(?.76.196)}%#%f '                         # %/# (normal/root); green/red (ok/error)
+# PROMPT='%70F%n@%m%f '                                  # green user@host
+# preexec() { printf "\e[0m"; }
+PROMPT='%{$fg_bold[yellow]%}gkapfham in %{$fg_bold[green]%}%2~ $(virtualenv_prompt_info)%{$reset_color%}$GITSTATUS_PROMPT%{$reset_color%}'
+
+# PROMPT+='%39F%$((-GITSTATUS_PROMPT_LEN-1))<…<%~%<<%f'  # blue current working directory
+# PROMPT+='${GITSTATUS_PROMPT:+ $GITSTATUS_PROMPT}'      # git status
+# PROMPT+=$'\n'                                          # new line
+# PROMPT+='%F{%(?.76.196)}%#%f '                         # %/# (normal/root); green/red (ok/error)
