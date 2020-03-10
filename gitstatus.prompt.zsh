@@ -101,18 +101,5 @@ add-zsh-hook precmd gitstatus_prompt_update
 # Enable/disable the right prompt options.
 setopt no_prompt_bang prompt_percent prompt_subst
 
-# Customize prompt. Put $GITSTATUS_PROMPT in it to reflect git status.
-#
-# Example:
-#
-#   user@host ~/projects/skynet master ⇡42
-#   % █
-#
 # The current directory gets truncated from the left if the whole prompt doesn't fit on the line.
-# PROMPT='%70F%n@%m%f '                                  # green user@host
-PROMPT='%{$fg_bold[yellow]%}שּ gkapfham %{$fg_bold[green]%} $(shrink_path -f) $(virtualenv_prompt_info)%{$reset_color%}$GITSTATUS_PROMPT%{$reset_color%}'
-
-# PROMPT+='%39F%$((-GITSTATUS_PROMPT_LEN-1))<…<%~%<<%f'  # blue current working directory
-# PROMPT+='${GITSTATUS_PROMPT:+ $GITSTATUS_PROMPT}'      # git status
-# PROMPT+=$'\n'                                          # new line
-# PROMPT+='%F{%(?.76.196)}%#%f '                         # %/# (normal/root); green/red (ok/error)
+PROMPT='%{$fg_bold[yellow]%}ﰌ gkapfham %{$fg_bold[green]%} $(shrink_path -f) $(virtualenv_prompt_info)%{$reset_color%}$GITSTATUS_PROMPT%{$reset_color%}'
