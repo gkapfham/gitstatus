@@ -51,11 +51,11 @@ function gitstatus_prompt_update() {
     where=$VCS_STATUS_TAG
   else
     p+='%f@'
-    where=''+${VCS_STATUS_COMMIT[1,8]}
+    where=''+${VCS_STATUS_COMMIT[1,8]}
   fi
 
   (( $#where > 32 )) && where[13,-13]="…"  # truncate long branch names and tags
-  p+="${clean}שׂ ${where//\%/%%}"             # escape %
+  p+="${clean} ${where//\%/%%}"             # escape %
 
   # *42 if have stashes.
   (( VCS_STATUS_STASHES        )) && p+=" ${stash}*${VCS_STATUS_STASHES}"
